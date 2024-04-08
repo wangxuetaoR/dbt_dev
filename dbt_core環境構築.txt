@@ -1,0 +1,85 @@
+■事前準備
+1、pythonのインストール
+URL:https://www.python.org/
+確認コマンド：python --version
+
+2、Pythonの仮想環境を作成して、アクティブにする
+$cd c:\workspace
+$python -m venv myenv
+$myenv\Scripts\activate
+
+3、postgresのインストール
+URL:https://www.postgresql.org/download/windows/
+
+4、dbtコマンドラインツールをインストールする
+$pwd
+c:\workspace\myenv
+$pip install dbt-core dbt-postgres
+
+※dbt-core：必須
+※dbt-postgres：接続アダプタ
+
+■DBTプロジェクト作成
+5、プロジェクト初期化
+$pwd
+c:\workspace\myenv
+$dbt init
+下記DB情報を記入する。
+project name: dbt_dev
+Which database would you like to use?
+[1] postgres
+Enter a number: 1
+host : localhost
+port : 5432
+user : postgres
+pass : DBパスワード
+dbname : postgres
+schema : dbt_test
+threads : 1
+
+6、DBパラメータ設定
+$pwd
+c:\workspace\myenv
+$dbt debug ––config-dir
+05:26:52  Running with dbt=1.7.11
+05:26:52  To view your profiles.yml file, run:
+
+start C:\Users\wang.xuetao\.dbt
+
+7、「6」で出力した「start」コマンドを実行する。
+profiles.ymlを開いて、DB情報を確認する
+
+8、DB接続をテストする
+$pwd
+c:\workspace\myenv
+$cd dbt_dev
+$dbt debug
+
+9、プロジェクト作成すると、既存二つmodelがある。
+下記コマンド実行後で、DBに確認できる。
+$dbt run
+
+確認：postgresクライアントに以下内容を新規しました。
+テーブル：my_first_dbt_model
+ビュー：my_second_dbt_model
+
+10、CSVからDBに登録する（詳細内容は「https://github.com/wangxuetaoR/dbt_dev」を参照してください。）
+seedフォルダにCSVを置いて、下記コマンドを実行する。
+$dbt seed
+
+確認：CSVデータにより、DBにテーブルを新規すること。
+
+11、model新規を試してみて
+models¥fund_status¥fund_portfolio_stats.sql（詳細内容は「https://github.com/wangxuetaoR/dbt_dev」を参照してください。）
+$dbt run -s fund_portfolio_stats
+
+確認：ビュー「fund_portfolio_stats」を生成されること。
+
+12、ドキュメント生成
+下記コマンドを実行する。
+$dbt docs generate
+$dbt docs serve
+
+データとmodelの情報を見えるし、依存関係も追跡できます。
+
+
