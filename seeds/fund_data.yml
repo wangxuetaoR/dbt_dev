@@ -3,7 +3,7 @@ seeds:
   - name: product
     config:
       column_types: 
-        code: varchar(4)
+        code: varchar(6)
         type_code: varchar(2)
   - name: type
     config:
